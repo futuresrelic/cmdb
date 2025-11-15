@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: cmdb-postgres
+    environment:
+      POSTGRES_USER: cmdb
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-cmdb_password}
+      POSTGRES_DB: cmdb
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cmdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - cmdb-network
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: cmdb-backend
+    environment:
+      DATABASE_URL: postgresql://cmdb:${DB_PASSWORD:-cmdb_password}@postgres:5432/cmdb?schema=public
+      PORT: 3001
+      NODE_ENV: production
+      TMDB_API_KEY: ${TMDB_API_KEY}
+      OMDB_API_KEY: ${OMDB_API_KEY}
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost}
+    ports:
+      - "3001:3001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - cmdb-network
+    restart: unless-stopped
+
+  # Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: cmdb-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - cmdb-network
+    restart: unless-stopped
+
+volumes:
+  postgres-data:
+
+networks:
+  cmdb-network:
+    driver: bridge
