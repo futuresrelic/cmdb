@@ -107,10 +107,14 @@ function ImportCSVPage() {
         <div className="bg-white rounded-lg shadow-lg p-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Import Results</h2>
 
-          <div className="grid md:grid-cols-3 gap-6 mb-6">
+          <div className="grid md:grid-cols-4 gap-6 mb-6">
             <div className="bg-green-50 border border-green-200 rounded-lg p-4">
               <div className="text-3xl font-bold text-green-600">{result.imported}</div>
               <div className="text-sm text-green-800">Movies Imported</div>
+            </div>
+            <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+              <div className="text-3xl font-bold text-purple-600">{result.enriched || 0}</div>
+              <div className="text-sm text-purple-800">Enriched from TMDB/IMDB</div>
             </div>
             <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
               <div className="text-3xl font-bold text-yellow-600">{result.skipped}</div>
