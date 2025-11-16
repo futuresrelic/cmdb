@@ -1,7 +1,5 @@
 # Build stage
-FROM node:20-alpine AS builder
-
-RUN apk add --no-cache openssl libc6-compat
+FROM node:20-slim AS builder
 
 WORKDIR /app
 
@@ -16,9 +14,7 @@ RUN npx prisma generate
 RUN npm run build
 
 # Production stage
-FROM node:20-alpine
-
-RUN apk add --no-cache openssl libc6-compat
+FROM node:20-slim
 
 WORKDIR /app
 
