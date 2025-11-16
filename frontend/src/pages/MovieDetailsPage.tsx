@@ -68,12 +68,24 @@ function MovieDetailsPage() {
 
       <div className="bg-white rounded-lg shadow-lg overflow-hidden">
         <div className="md:flex">
-          <div className="md:w-1/3">
+          <div className="md:w-1/3 overflow-hidden relative group">
             {movie.posterUrl ? (
               <img
                 src={movie.posterUrl}
                 alt={movie.title}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                style={{
+                  transformOrigin: 'center center',
+                }}
+                onMouseMove={(e) => {
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  const x = ((e.clientX - rect.left) / rect.width - 0.5) * 20; // Pan left/right based on mouse position
+                  const y = ((e.clientY - rect.top) / rect.height - 0.5) * 20; // Pan up/down based on mouse position
+                  e.currentTarget.style.transform = `scale(1.1) translate(${x}px, ${y}px)`;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'scale(1) translate(0, 0)';
+                }}
               />
             ) : (
               <div className="w-full h-96 bg-gray-200 flex items-center justify-center">
@@ -92,7 +104,7 @@ function MovieDetailsPage() {
               </div>
               <div className="flex gap-2">
                 <button
-                  onClick={() => alert('Edit functionality coming soon!')}
+                  onClick={() => navigate(`/movie/${id}/edit`)}
                   className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
                 >
                   Edit
