@@ -75,7 +75,8 @@ export const getMovieById = asyncHandler(async (req: Request, res: Response) => 
           person: true
         },
         orderBy: { order: 'asc' }
-      }
+      },
+      copies: true
     }
   });
 
@@ -99,13 +100,17 @@ export const createMovie = asyncHandler(async (req: Request, res: Response) => {
     posterUrl,
     backdropUrl,
     sourceType = 'MANUAL',
-    physicalFormat,
-    distributor,
-    upc,
-    notes,
     rating,
     genres,
-    people
+    people,
+    // Copy-related fields (optional)
+    physicalFormat,
+    edition,
+    region,
+    distributor,
+    upc,
+    condition,
+    notes
   } = req.body;
 
   if (!title) {
@@ -125,10 +130,6 @@ export const createMovie = asyncHandler(async (req: Request, res: Response) => {
       posterUrl,
       backdropUrl,
       sourceType,
-      physicalFormat,
-      distributor,
-      upc,
-      notes,
       rating: rating ? parseFloat(rating) : null,
       movieGenres: genres
         ? {
@@ -162,6 +163,22 @@ export const createMovie = asyncHandler(async (req: Request, res: Response) => {
       }
     }
   });
+
+  // If physical media data is provided, create a Copy record
+  if (physicalFormat || distributor || upc || edition || region || condition || notes) {
+    await prisma.copy.create({
+      data: {
+        movieId: movie.id,
+        format: physicalFormat || null,
+        edition: edition || null,
+        region: region || null,
+        distributor: distributor || null,
+        upc: upc || null,
+        condition: condition || null,
+        notes: notes || null
+      }
+    });
+  }
 
   res.status(201).json(movie);
 });
