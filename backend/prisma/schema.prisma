@@ -98,9 +98,14 @@ model ExternalMatch {
   externalId  String
   url         String?
 
-  // Cached data from external source
+  // Cached data from external source for comparison
   rating      Float?
   voteCount   Int?
+  plot        String?   @db.Text
+  runtime     Int?
+  contentRating String?
+  language    String?
+  country     String?
 
   @@unique([movieId, source])
   @@index([externalId, source])

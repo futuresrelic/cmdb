@@ -50,6 +50,11 @@ export interface ExternalMatch {
   url?: string;
   rating?: number;
   voteCount?: number;
+  plot?: string;
+  runtime?: number;
+  contentRating?: string;
+  language?: string;
+  country?: string;
 }
 
 export interface Person {

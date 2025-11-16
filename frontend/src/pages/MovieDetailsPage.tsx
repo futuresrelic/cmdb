@@ -177,6 +177,114 @@ function MovieDetailsPage() {
               </div>
             )}
 
+            {/* TMDB vs IMDB Comparison */}
+            {(tmdbMatch || imdbMatch) && (
+              <div className="mb-6 bg-gradient-to-r from-green-50 to-yellow-50 p-6 rounded-lg border border-gray-200">
+                <h2 className="text-2xl font-bold mb-4 text-gray-900">Source Comparison</h2>
+                <div className="grid md:grid-cols-2 gap-6">
+                  {/* TMDB Column */}
+                  <div className="bg-white rounded-lg p-4 border-2 border-green-300">
+                    <h3 className="text-lg font-bold text-green-700 mb-3 flex items-center">
+                      <span className="bg-green-600 text-white px-2 py-1 rounded mr-2 text-sm">TMDB</span>
+                      The Movie Database
+                    </h3>
+                    {tmdbMatch ? (
+                      <div className="space-y-3 text-sm">
+                        {tmdbMatch.rating && (
+                          <div>
+                            <span className="font-semibold text-gray-700">Rating:</span>
+                            <span className="ml-2 text-gray-900">⭐ {tmdbMatch.rating.toFixed(1)}/10</span>
+                          </div>
+                        )}
+                        {tmdbMatch.runtime && (
+                          <div>
+                            <span className="font-semibold text-gray-700">Runtime:</span>
+                            <span className="ml-2 text-gray-900">{tmdbMatch.runtime} minutes</span>
+                          </div>
+                        )}
+                        {tmdbMatch.contentRating && (
+                          <div>
+                            <span className="font-semibold text-gray-700">Rating:</span>
+                            <span className="ml-2 text-gray-900">{tmdbMatch.contentRating}</span>
+                          </div>
+                        )}
+                        {tmdbMatch.language && (
+                          <div>
+                            <span className="font-semibold text-gray-700">Language:</span>
+                            <span className="ml-2 text-gray-900">{tmdbMatch.language}</span>
+                          </div>
+                        )}
+                        {tmdbMatch.plot && (
+                          <div className="pt-2 border-t border-gray-200">
+                            <span className="font-semibold text-gray-700 block mb-1">Plot:</span>
+                            <p className="text-gray-700 text-sm leading-relaxed">{tmdbMatch.plot}</p>
+                          </div>
+                        )}
+                        {!tmdbMatch.rating && !tmdbMatch.runtime && !tmdbMatch.plot && (
+                          <p className="text-gray-500 italic">Limited data available</p>
+                        )}
+                      </div>
+                    ) : (
+                      <p className="text-gray-500 italic">No TMDB data</p>
+                    )}
+                  </div>
+
+                  {/* IMDB Column */}
+                  <div className="bg-white rounded-lg p-4 border-2 border-yellow-400">
+                    <h3 className="text-lg font-bold text-yellow-700 mb-3 flex items-center">
+                      <span className="bg-yellow-600 text-white px-2 py-1 rounded mr-2 text-sm">IMDB</span>
+                      Internet Movie Database
+                    </h3>
+                    {imdbMatch ? (
+                      <div className="space-y-3 text-sm">
+                        {imdbMatch.rating && (
+                          <div>
+                            <span className="font-semibold text-gray-700">Rating:</span>
+                            <span className="ml-2 text-gray-900">⭐ {imdbMatch.rating.toFixed(1)}/10</span>
+                          </div>
+                        )}
+                        {imdbMatch.runtime && (
+                          <div>
+                            <span className="font-semibold text-gray-700">Runtime:</span>
+                            <span className="ml-2 text-gray-900">{imdbMatch.runtime} minutes</span>
+                          </div>
+                        )}
+                        {imdbMatch.contentRating && (
+                          <div>
+                            <span className="font-semibold text-gray-700">Rated:</span>
+                            <span className="ml-2 text-gray-900">{imdbMatch.contentRating}</span>
+                          </div>
+                        )}
+                        {imdbMatch.language && (
+                          <div>
+                            <span className="font-semibold text-gray-700">Language:</span>
+                            <span className="ml-2 text-gray-900">{imdbMatch.language}</span>
+                          </div>
+                        )}
+                        {imdbMatch.country && (
+                          <div>
+                            <span className="font-semibold text-gray-700">Country:</span>
+                            <span className="ml-2 text-gray-900">{imdbMatch.country}</span>
+                          </div>
+                        )}
+                        {imdbMatch.plot && (
+                          <div className="pt-2 border-t border-gray-200">
+                            <span className="font-semibold text-gray-700 block mb-1">Plot:</span>
+                            <p className="text-gray-700 text-sm leading-relaxed">{imdbMatch.plot}</p>
+                          </div>
+                        )}
+                        {!imdbMatch.rating && !imdbMatch.runtime && !imdbMatch.plot && (
+                          <p className="text-gray-500 italic">Limited data available</p>
+                        )}
+                      </div>
+                    ) : (
+                      <p className="text-gray-500 italic">No IMDB data</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
             {movie.tagline && (
               <p className="text-xl text-gray-600 italic mb-4">{movie.tagline}</p>
             )}

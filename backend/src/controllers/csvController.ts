@@ -216,12 +216,21 @@ export const importFromCSV = asyncHandler(async (req: Request, res: Response) =>
             externalId: tmdbId.toString(),
             url: `https://www.themoviedb.org/movie/${tmdbId}`,
             rating: externalDataSources.tmdb?.rating || null,
-            voteCount: null
+            voteCount: null,
+            plot: externalDataSources.tmdb?.plot || null,
+            runtime: externalDataSources.tmdb?.runtime || null,
+            contentRating: externalDataSources.tmdb?.contentRating || null,
+            language: externalDataSources.tmdb?.language || null,
+            country: null
           },
           update: {
             externalId: tmdbId.toString(),
             url: `https://www.themoviedb.org/movie/${tmdbId}`,
-            rating: externalDataSources.tmdb?.rating || null
+            rating: externalDataSources.tmdb?.rating || null,
+            plot: externalDataSources.tmdb?.plot || null,
+            runtime: externalDataSources.tmdb?.runtime || null,
+            contentRating: externalDataSources.tmdb?.contentRating || null,
+            language: externalDataSources.tmdb?.language || null
           }
         });
       }
@@ -241,12 +250,22 @@ export const importFromCSV = asyncHandler(async (req: Request, res: Response) =>
             externalId: imdbId,
             url: `https://www.imdb.com/title/${imdbId}/`,
             rating: externalDataSources.imdb?.rating || null,
-            voteCount: null
+            voteCount: null,
+            plot: externalDataSources.imdb?.plot || null,
+            runtime: externalDataSources.imdb?.runtime || null,
+            contentRating: externalDataSources.imdb?.contentRating || null,
+            language: externalDataSources.imdb?.language || null,
+            country: externalDataSources.imdb?.country || null
           },
           update: {
             externalId: imdbId,
             url: `https://www.imdb.com/title/${imdbId}/`,
-            rating: externalDataSources.imdb?.rating || null
+            rating: externalDataSources.imdb?.rating || null,
+            plot: externalDataSources.imdb?.plot || null,
+            runtime: externalDataSources.imdb?.runtime || null,
+            contentRating: externalDataSources.imdb?.contentRating || null,
+            language: externalDataSources.imdb?.language || null,
+            country: externalDataSources.imdb?.country || null
           }
         });
       }
