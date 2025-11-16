@@ -5,7 +5,8 @@
  * Useful for identifying movies to delete
  */
 
-const { PrismaClient } = require('@prisma/client');
+const path = require('path');
+const { PrismaClient } = require(path.join(__dirname, '../backend/node_modules/@prisma/client'));
 
 const prisma = new PrismaClient();
 
@@ -19,25 +20,23 @@ async function listMovies() {
         id: true,
         title: true,
         year: true,
-        physicalFormat: true,
         sourceType: true,
         createdAt: true
       }
     });
 
     console.log(`\n📋 Found ${movies.length} movies in database:\n`);
-    console.log('ID'.padEnd(6) + 'Title'.padEnd(50) + 'Year'.padEnd(8) + 'Format'.padEnd(15) + 'Source'.padEnd(12) + 'Created');
-    console.log('-'.repeat(120));
+    console.log('ID'.padEnd(30) + 'Title'.padEnd(50) + 'Year'.padEnd(8) + 'Source'.padEnd(12) + 'Created');
+    console.log('-'.repeat(110));
 
     for (const movie of movies) {
-      const id = String(movie.id).padEnd(6);
+      const id = String(movie.id).substring(0, 28).padEnd(30);
       const title = (movie.title || 'Untitled').substring(0, 48).padEnd(50);
       const year = String(movie.year || '----').padEnd(8);
-      const format = (movie.physicalFormat || 'N/A').substring(0, 13).padEnd(15);
       const source = (movie.sourceType || 'N/A').substring(0, 10).padEnd(12);
       const created = movie.createdAt.toISOString().split('T')[0];
 
-      console.log(`${id}${title}${year}${format}${source}${created}`);
+      console.log(`${id}${title}${year}${source}${created}`);
     }
 
     console.log('\n💡 To delete specific movies, use:');

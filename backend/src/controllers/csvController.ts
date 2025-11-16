@@ -160,16 +160,38 @@ export const importFromCSV = asyncHandler(async (req: Request, res: Response) =>
         posterUrl: row.posterUrl || row.poster_url || row.Poster || externalData?.posterUrl || null,
         backdropUrl: row.backdropUrl || row.backdrop_url || externalData?.backdropUrl || null,
         sourceType,
-        physicalFormat: row.physicalFormat || row.format || row.Format || null,
-        distributor: row.distributor || row.Distributor || null,
-        upc: row.upc || row.UPC || row.barcode || null,
-        notes: row.notes || row.Notes || null,
         rating: rating || externalData?.rating || null
       };
 
-      await prisma.movie.create({
+      // Create the movie
+      const movie = await prisma.movie.create({
         data: movieData
       });
+
+      // If physical media data is present, create a Copy record
+      const hasPhysicalData =
+        row.physicalFormat || row.format || row.Format ||
+        row.distributor || row.Distributor ||
+        row.upc || row.UPC || row.barcode ||
+        row.edition || row.Edition ||
+        row.region || row.Region ||
+        row.condition || row.Condition ||
+        row.notes || row.Notes;
+
+      if (hasPhysicalData) {
+        await prisma.copy.create({
+          data: {
+            movieId: movie.id,
+            format: row.physicalFormat || row.format || row.Format || null,
+            edition: row.edition || row.Edition || null,
+            region: row.region || row.Region || null,
+            distributor: row.distributor || row.Distributor || null,
+            upc: row.upc || row.UPC || row.barcode || null,
+            condition: row.condition || row.Condition || null,
+            notes: row.notes || row.Notes || null
+          }
+        });
+      }
 
       imported++;
     } catch (error: any) {

@@ -9,7 +9,8 @@
  *   node delete-movies.js --all (delete ALL movies - use with caution!)
  */
 
-const { PrismaClient } = require('@prisma/client');
+const path = require('path');
+const { PrismaClient } = require(path.join(__dirname, '../backend/node_modules/@prisma/client'));
 
 const prisma = new PrismaClient();
 
