@@ -79,9 +79,9 @@ function MovieDetailsPage() {
                 }}
                 onMouseMove={(e) => {
                   const rect = e.currentTarget.getBoundingClientRect();
-                  const x = ((e.clientX - rect.left) / rect.width - 0.5) * 20; // Pan left/right based on mouse position
-                  const y = ((e.clientY - rect.top) / rect.height - 0.5) * 20; // Pan up/down based on mouse position
-                  e.currentTarget.style.transform = `scale(1.1) translate(${x}px, ${y}px)`;
+                  const x = ((e.clientX - rect.left) / rect.width - 0.5) * 60; // Pan left/right based on mouse position
+                  const y = ((e.clientY - rect.top) / rect.height - 0.5) * 60; // Pan up/down based on mouse position
+                  e.currentTarget.style.transform = `scale(1.15) translate(${x}px, ${y}px)`;
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = 'scale(1) translate(0, 0)';
