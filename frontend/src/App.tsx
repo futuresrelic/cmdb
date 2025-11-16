@@ -4,6 +4,7 @@ import BrowseMoviesPage from './pages/BrowseMoviesPage';
 import MovieDetailsPage from './pages/MovieDetailsPage';
 import AddMoviePage from './pages/AddMoviePage';
 import SearchExternalPage from './pages/SearchExternalPage';
+import ImportCSVPage from './pages/ImportCSVPage';
 
 function App() {
   return (
@@ -35,6 +36,12 @@ function App() {
                   >
                     Search External
                   </Link>
+                  <Link
+                    to="/import-csv"
+                    className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700 transition"
+                  >
+                    Import CSV
+                  </Link>
                 </div>
               </div>
             </div>
@@ -48,6 +55,7 @@ function App() {
             <Route path="/movie/:id" element={<MovieDetailsPage />} />
             <Route path="/add" element={<AddMoviePage />} />
             <Route path="/search-external" element={<SearchExternalPage />} />
+            <Route path="/import-csv" element={<ImportCSVPage />} />
           </Routes>
         </main>
 

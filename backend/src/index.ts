@@ -8,6 +8,7 @@ import movieRoutes from './routes/movieRoutes';
 import externalRoutes from './routes/externalRoutes';
 import personRoutes from './routes/personRoutes';
 import genreRoutes from './routes/genreRoutes';
+import csvRoutes from './routes/csvRoutes';
 
 dotenv.config();
 
@@ -33,6 +34,7 @@ app.use('/api/movies', movieRoutes);
 app.use('/api/external', externalRoutes);
 app.use('/api/people', personRoutes);
 app.use('/api/genres', genreRoutes);
+app.use('/api/csv', csvRoutes);
 
 // Error handling
 app.use(errorHandler);

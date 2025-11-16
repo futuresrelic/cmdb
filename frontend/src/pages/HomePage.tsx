@@ -12,7 +12,7 @@ function HomePage() {
           anywhere else. Perfect for rare releases, Quebec content, and regional DVDs.
         </p>
 
-        <div className="grid md:grid-cols-3 gap-8 mt-12">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mt-12">
           <div className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition">
             <div className="text-4xl mb-4">✍️</div>
             <h2 className="text-2xl font-bold mb-3">Manual Entry</h2>
@@ -57,6 +57,21 @@ function HomePage() {
               Browse Movies
             </Link>
           </div>
+
+          <div className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition">
+            <div className="text-4xl mb-4">📥</div>
+            <h2 className="text-2xl font-bold mb-3">Import CSV</h2>
+            <p className="text-gray-600 mb-4">
+              Bulk import movies from CSV files. Perfect for migrating from
+              CineShelf or other apps.
+            </p>
+            <Link
+              to="/import-csv"
+              className="inline-block bg-orange-600 text-white px-6 py-2 rounded-lg hover:bg-orange-700 transition"
+            >
+              Import CSV
+            </Link>
+          </div>
         </div>
 
         <div className="mt-16 bg-blue-50 rounded-lg p-8">
@@ -77,6 +92,10 @@ function HomePage() {
             <p>
               <strong>🎯 Central repository:</strong> A single source of truth for all your movie
               data, integrating manual and external sources.
+            </p>
+            <p>
+              <strong>📥 Bulk import:</strong> Import from CSV files - migrate from CineShelf or
+              other apps in seconds.
             </p>
           </div>
         </div>
