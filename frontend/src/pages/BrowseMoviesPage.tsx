@@ -194,6 +194,7 @@ function BrowseMoviesPage() {
                 Previous
               </button>
               <div className="flex items-center gap-1">
+                {/* Always show page 1 if not nearby current page */}
                 {page > 3 && (
                   <>
                     <button
@@ -202,13 +203,17 @@ function BrowseMoviesPage() {
                     >
                       1
                     </button>
-                    {page > 4 && <span className="px-2">...</span>}
+                    <span className="px-2">...</span>
                   </>
                 )}
-                {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                  const pageNum = Math.max(1, Math.min(page - 2 + i, totalPages - 4 + i));
-                  if (pageNum < 1 || pageNum > totalPages || (page <= 3 && pageNum > 5) || (page > totalPages - 3 && pageNum < totalPages - 4)) return null;
-                  return (
+
+                {/* Show pages around current page */}
+                {Array.from({ length: totalPages }, (_, i) => i + 1)
+                  .filter(p => {
+                    // Show current page and 2 pages on each side
+                    return p >= page - 2 && p <= page + 2;
+                  })
+                  .map(pageNum => (
                     <button
                       key={pageNum}
                       onClick={() => setPage(pageNum)}
@@ -220,11 +225,12 @@ function BrowseMoviesPage() {
                     >
                       {pageNum}
                     </button>
-                  );
-                })}
+                  ))}
+
+                {/* Always show last page if not nearby current page */}
                 {page < totalPages - 2 && (
                   <>
-                    {page < totalPages - 3 && <span className="px-2">...</span>}
+                    <span className="px-2">...</span>
                     <button
                       onClick={() => setPage(totalPages)}
                       className="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition"
