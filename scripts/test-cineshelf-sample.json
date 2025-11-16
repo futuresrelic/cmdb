@@ -1,0 +1,110 @@
+{
+  "user": "klindakoil",
+  "exported": "2025-11-16T08:18:29.795Z",
+  "collection": [
+    {
+      "movie": {
+        "copy_id": 167,
+        "format": "DVD",
+        "edition": "",
+        "region": "Region 1",
+        "condition": "Good",
+        "notes": "",
+        "barcode": "",
+        "created_at": "2025-09-04T15:02:32.945Z",
+        "movie_id": 6,
+        "tmdb_id": "62",
+        "title": "2001: A Space Odyssey",
+        "display_title": null,
+        "year": 1968,
+        "poster_url": "https://image.tmdb.org/t/p/w500/nRsTL3djLDBcnMNoBugqobFe7ii.jpg",
+        "rating": 8.065,
+        "runtime": 149,
+        "genre": "Science Fiction, Mystery, Adventure",
+        "media_type": "movie",
+        "overview": "Humanity finds a mysterious object buried beneath the lunar surface and sets off to find its origins with the help of HAL 9000, the world's most advanced super computer.",
+        "director": "Stanley Kubrick",
+        "certification": "G",
+        "copy_count": 1
+      },
+      "copies": [
+        {
+          "copy_id": 167,
+          "format": "DVD",
+          "edition": "",
+          "region": "Region 1",
+          "condition": "Good",
+          "notes": "",
+          "barcode": "",
+          "created_at": "2025-09-04T15:02:32.945Z",
+          "movie_id": 6,
+          "tmdb_id": "62",
+          "title": "2001: A Space Odyssey",
+          "display_title": null,
+          "year": 1968,
+          "poster_url": "https://image.tmdb.org/t/p/w500/nRsTL3djLDBcnMNoBugqobFe7ii.jpg",
+          "rating": 8.065,
+          "runtime": 149,
+          "genre": "Science Fiction, Mystery, Adventure",
+          "media_type": "movie",
+          "overview": "Humanity finds a mysterious object buried beneath the lunar surface and sets off to find its origins with the help of HAL 9000, the world's most advanced super computer.",
+          "director": "Stanley Kubrick",
+          "certification": "G",
+          "copy_count": 1
+        }
+      ]
+    },
+    {
+      "movie": {
+        "copy_id": 168,
+        "format": "DVD",
+        "edition": "",
+        "region": "",
+        "condition": "Good",
+        "notes": "",
+        "barcode": "",
+        "created_at": "2025-09-04T15:02:32.945Z",
+        "movie_id": 7,
+        "tmdb_id": "4437",
+        "title": "2010",
+        "display_title": "2010: The Year We Make Contact",
+        "year": 1984,
+        "poster_url": "https://image.tmdb.org/t/p/w500/mEWKXuCMv7mFMxXVSTI3v8UOQuq.jpg",
+        "rating": 6.637,
+        "runtime": 116,
+        "genre": "Thriller, Science Fiction",
+        "media_type": "movie",
+        "overview": "While planet Earth poises on the brink of nuclear self-destruction, a team of Russian and American scientists aboard the Leonov hurtles to a rendezvous with the still-orbiting Discovery spacecraft and its sole known survivor, the homicidal computer HAL.",
+        "director": "Peter Hyams",
+        "certification": "PG",
+        "copy_count": 1
+      },
+      "copies": [
+        {
+          "copy_id": 168,
+          "format": "DVD",
+          "edition": "",
+          "region": "",
+          "condition": "Good",
+          "notes": "",
+          "barcode": "",
+          "created_at": "2025-09-04T15:02:32.945Z",
+          "movie_id": 7,
+          "tmdb_id": "4437",
+          "title": "2010",
+          "display_title": "2010: The Year We Make Contact",
+          "year": 1984,
+          "poster_url": "https://image.tmdb.org/t/p/w500/mEWKXuCMv7mFMxXVSTI3v8UOQuq.jpg",
+          "rating": 6.637,
+          "runtime": 116,
+          "genre": "Thriller, Science Fiction",
+          "media_type": "movie",
+          "overview": "While planet Earth poises on the brink of nuclear self-destruction, a team of Russian and American scientists aboard the Leonov hurtles to a rendezvous with the still-orbiting Discovery spacecraft and its sole known survivor, the homicidal computer HAL.",
+          "director": "Peter Hyams",
+          "certification": "PG",
+          "copy_count": 1
+        }
+      ]
+    }
+  ]
+}

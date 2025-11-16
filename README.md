@@ -31,6 +31,11 @@ Perfect for collectors, archivists, and cinephiles with rare or regional content
 - Organize by genres
 - Support for multiple languages and countries
 
+### Import/Export
+- 📥 **CSV Import** - Bulk import movies from CSV files
+- 🔄 **CineShelf Converter** - Convert CineShelf JSON exports to CMDB CSV format (see `scripts/README-CINESHELF.md`)
+- Export functionality (planned)
+
 ## 🏗️ Tech Stack
 
 **Backend:**
