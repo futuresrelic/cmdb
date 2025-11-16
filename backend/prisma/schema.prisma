@@ -34,12 +34,6 @@ model Movie {
   // Source tracking
   sourceType  SourceType @default(MANUAL)
 
-  // Physical media details (for manual entries)
-  physicalFormat String? // DVD, Blu-ray, VHS, etc.
-  distributor    String?
-  upc            String? // Universal Product Code
-  notes          String? @db.Text
-
   // Ratings
   rating      Float?    // User/CMDB rating
 
@@ -47,10 +41,47 @@ model Movie {
   externalMatches ExternalMatch[]
   moviePeople     MoviePerson[]
   movieGenres     MovieGenre[]
+  copies          Copy[]  // Physical copies of this movie
 
   @@index([title])
   @@index([year])
   @@index([sourceType])
+}
+
+// Physical copies/editions of a movie
+// Allows tracking multiple versions (e.g., DVD Standard, DVD Special Edition, Blu-ray, etc.)
+model Copy {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  movieId     String
+  movie       Movie    @relation(fields: [movieId], references: [id], onDelete: Cascade)
+
+  // Physical format
+  format      String?  // DVD, Blu-ray, VHS, LaserDisc, 4K UHD, etc.
+  edition     String?  // Standard, Special Edition, Director's Cut, Widescreen, Full Screen, etc.
+  region      String?  // Region 1, Region A, NTSC, PAL, etc.
+
+  // Purchase/source info
+  distributor String?  // Warner Bros, Universal, etc.
+  upc         String?  // Barcode/UPC
+  purchaseDate DateTime?
+  purchasePrice Float?
+
+  // Condition
+  condition   String?  // Mint, Excellent, Good, Fair, Poor
+
+  // Additional details
+  notes       String?  @db.Text
+  location    String?  // Where it's stored (shelf, box, etc.)
+
+  // Features (for tracking special features, bonus content, etc.)
+  hasSlipcover Boolean  @default(false)
+  isSealed     Boolean  @default(false)
+
+  @@index([movieId])
+  @@index([format])
 }
 
 // External platform matches (TMDB, IMDB, etc.)
