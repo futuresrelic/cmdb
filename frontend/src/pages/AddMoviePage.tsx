@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { movieApi } from '../services/api';
-import type { MovieFormData } from '../types';
 
 function AddMoviePage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState<MovieFormData>({
+  const [formData, setFormData] = useState<any>({
     title: '',
     originalTitle: '',
     year: undefined,
