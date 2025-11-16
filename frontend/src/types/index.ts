@@ -13,14 +13,32 @@ export interface Movie {
   posterUrl?: string;
   backdropUrl?: string;
   sourceType: 'MANUAL' | 'TMDB' | 'IMDB' | 'OMDB' | 'HYBRID';
-  physicalFormat?: string;
-  distributor?: string;
-  upc?: string;
-  notes?: string;
   rating?: number;
+  contentRating?: string;
+  certification?: string;
   externalMatches?: ExternalMatch[];
   movieGenres?: MovieGenre[];
   moviePeople?: MoviePerson[];
+  copies?: Copy[];
+}
+
+export interface Copy {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  movieId: string;
+  format?: string;
+  edition?: string;
+  region?: string;
+  distributor?: string;
+  upc?: string;
+  purchaseDate?: string;
+  purchasePrice?: number;
+  condition?: string;
+  notes?: string;
+  location?: string;
+  hasSlipcover: boolean;
+  isSealed: boolean;
 }
 
 export interface ExternalMatch {
@@ -82,11 +100,9 @@ export interface MovieFormData {
   posterUrl?: string;
   backdropUrl?: string;
   sourceType?: string;
-  physicalFormat?: string;
-  distributor?: string;
-  upc?: string;
-  notes?: string;
   rating?: number;
+  contentRating?: string;
+  certification?: string;
 }
 
 export interface SearchResult {
