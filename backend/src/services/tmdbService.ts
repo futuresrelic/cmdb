@@ -115,6 +115,26 @@ class TMDBService {
     }
   }
 
+  async getExternalIds(tmdbId: number): Promise<{ imdb_id?: string; [key: string]: any }> {
+    this.checkApiKey();
+
+    try {
+      const response = await axios.get(
+        `${TMDB_BASE_URL}/movie/${tmdbId}/external_ids`,
+        {
+          params: {
+            api_key: this.apiKey
+          }
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      console.error('TMDB external IDs error:', error);
+      throw new AppError('Failed to get external IDs from TMDB', 500);
+    }
+  }
+
   getImageUrl(path: string | null | undefined, size: 'w500' | 'original' = 'w500'): string | null {
     if (!path) return null;
     return `${TMDB_IMAGE_BASE}/${size}${path}`;

@@ -92,7 +92,7 @@ export const importFromCSV = asyncHandler(async (req: Request, res: Response) =>
 
       // Fetch data from ALL external sources
       const tmdbId = row.tmdb_id || row.tmdbId || row.TMDB_ID;
-      const imdbId = row.imdb_id || row.imdbId || row.IMDB_ID;
+      let imdbId = row.imdb_id || row.imdbId || row.IMDB_ID;
       const externalDataSources: any = {
         tmdb: null,
         imdb: null
@@ -117,12 +117,25 @@ export const importFromCSV = asyncHandler(async (req: Request, res: Response) =>
             contentRating: null // TODO: Fetch from TMDB certification endpoint
           };
           fetchedAny = true;
+
+          // If no IMDB ID provided in CSV, try to get it from TMDB
+          if (!imdbId || imdbId === '') {
+            try {
+              const externalIds = await tmdbService.getExternalIds(parseInt(tmdbId));
+              if (externalIds.imdb_id) {
+                imdbId = externalIds.imdb_id;
+                console.log(`Found IMDB ID ${imdbId} from TMDB for movie: ${title}`);
+              }
+            } catch (error) {
+              console.log(`Failed to fetch external IDs from TMDB for ID ${tmdbId}:`, error);
+            }
+          }
         } catch (error) {
           console.log(`Failed to fetch TMDB data for ID ${tmdbId}:`, error);
         }
       }
 
-      // Fetch from IMDB (via OMDB) if ID provided
+      // Fetch from IMDB (via OMDB) if ID provided or found from TMDB
       if (imdbId && imdbId !== '') {
         try {
           const imdbData = await omdbService.getMovieByImdbId(imdbId);
