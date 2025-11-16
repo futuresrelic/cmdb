@@ -4,7 +4,17 @@ import prisma from '../utils/prisma';
 import { Prisma } from '@prisma/client';
 
 export const getAllMovies = asyncHandler(async (req: Request, res: Response) => {
-  const { search, year, sourceType, limit = 50, offset = 0 } = req.query;
+  const {
+    search,
+    year,
+    sourceType,
+    genre,
+    minRating,
+    sortBy = 'createdAt',
+    sortOrder = 'desc',
+    limit = 50,
+    offset = 0
+  } = req.query;
 
   const where: Prisma.MovieWhereInput = {};
 
@@ -21,6 +31,31 @@ export const getAllMovies = asyncHandler(async (req: Request, res: Response) => 
 
   if (sourceType) {
     where.sourceType = String(sourceType) as any;
+  }
+
+  if (genre) {
+    where.movieGenres = {
+      some: {
+        genre: {
+          name: { contains: String(genre), mode: 'insensitive' }
+        }
+      }
+    };
+  }
+
+  if (minRating) {
+    where.rating = { gte: parseFloat(String(minRating)) };
+  }
+
+  // Build orderBy
+  const orderBy: any = {};
+  const sortField = String(sortBy);
+  const order = String(sortOrder) === 'asc' ? 'asc' : 'desc';
+
+  if (sortField === 'title' || sortField === 'year' || sortField === 'rating' || sortField === 'createdAt') {
+    orderBy[sortField] = order;
+  } else {
+    orderBy.createdAt = 'desc';
   }
 
   const [movies, total] = await Promise.all([
@@ -41,9 +76,10 @@ export const getAllMovies = asyncHandler(async (req: Request, res: Response) => 
             role: { in: ['DIRECTOR', 'ACTOR'] }
           },
           take: 5
-        }
+        },
+        copies: true
       },
-      orderBy: { createdAt: 'desc' },
+      orderBy,
       take: parseInt(String(limit)),
       skip: parseInt(String(offset))
     }),

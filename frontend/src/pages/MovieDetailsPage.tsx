@@ -57,6 +57,8 @@ function MovieDetailsPage() {
 
   const directors = movie.moviePeople?.filter((mp) => mp.role === 'DIRECTOR') || [];
   const actors = movie.moviePeople?.filter((mp) => mp.role === 'ACTOR') || [];
+  const tmdbMatch = movie.externalMatches?.find(m => m.source === 'TMDB');
+  const imdbMatch = movie.externalMatches?.find(m => m.source === 'IMDB');
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -88,12 +90,20 @@ function MovieDetailsPage() {
                   <p className="text-gray-600 italic mb-2">{movie.originalTitle}</p>
                 )}
               </div>
-              <button
-                onClick={handleDelete}
-                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition"
-              >
-                Delete
-              </button>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => alert('Edit functionality coming soon!')}
+                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={handleDelete}
+                  className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition"
+                >
+                  Delete
+                </button>
+              </div>
             </div>
 
             <div className="flex flex-wrap gap-4 mb-6">
@@ -103,13 +113,18 @@ function MovieDetailsPage() {
               {movie.runtime && (
                 <span className="bg-gray-100 px-3 py-1 rounded">{movie.runtime} min</span>
               )}
+              {movie.contentRating && (
+                <span className="bg-orange-100 text-orange-800 px-3 py-1 rounded">{movie.contentRating}</span>
+              )}
               <span
                 className={`px-3 py-1 rounded ${
                   movie.sourceType === 'MANUAL'
                     ? 'bg-blue-100 text-blue-800'
                     : movie.sourceType === 'TMDB'
                     ? 'bg-green-100 text-green-800'
-                    : 'bg-yellow-100 text-yellow-800'
+                    : movie.sourceType === 'IMDB'
+                    ? 'bg-yellow-100 text-yellow-800'
+                    : 'bg-purple-100 text-purple-800'
                 }`}
               >
                 {movie.sourceType}
@@ -120,6 +135,47 @@ function MovieDetailsPage() {
                 </span>
               )}
             </div>
+
+            {/* External IDs Section */}
+            {movie.externalMatches && movie.externalMatches.length > 0 && (
+              <div className="mb-6 bg-gray-50 p-4 rounded-lg">
+                <h2 className="text-xl font-bold mb-3">External Sources</h2>
+                <div className="grid md:grid-cols-2 gap-4">
+                  {tmdbMatch && (
+                    <div className="border border-green-200 bg-green-50 p-3 rounded">
+                      <div className="font-semibold text-green-800 mb-1">TMDB</div>
+                      <a
+                        href={tmdbMatch.url || `https://www.themoviedb.org/movie/${tmdbMatch.externalId}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:text-blue-800 text-sm"
+                      >
+                        ID: {tmdbMatch.externalId}
+                      </a>
+                      {tmdbMatch.rating && (
+                        <div className="text-sm text-gray-700 mt-1">Rating: {tmdbMatch.rating.toFixed(1)}</div>
+                      )}
+                    </div>
+                  )}
+                  {imdbMatch && (
+                    <div className="border border-yellow-200 bg-yellow-50 p-3 rounded">
+                      <div className="font-semibold text-yellow-800 mb-1">IMDB</div>
+                      <a
+                        href={imdbMatch.url || `https://www.imdb.com/title/${imdbMatch.externalId}/`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:text-blue-800 text-sm"
+                      >
+                        ID: {imdbMatch.externalId}
+                      </a>
+                      {imdbMatch.rating && (
+                        <div className="text-sm text-gray-700 mt-1">Rating: {imdbMatch.rating.toFixed(1)}</div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
 
             {movie.tagline && (
               <p className="text-xl text-gray-600 italic mb-4">{movie.tagline}</p>
@@ -189,53 +245,76 @@ function MovieDetailsPage() {
               </div>
             )}
 
-            {movie.physicalFormat && (
+            {/* Physical Copies Section */}
+            {movie.copies && movie.copies.length > 0 && (
               <div className="mb-6">
-                <h2 className="text-xl font-bold mb-2">Physical Format</h2>
-                <p className="text-gray-700">{movie.physicalFormat}</p>
-              </div>
-            )}
-
-            {movie.distributor && (
-              <div className="mb-6">
-                <h2 className="text-xl font-bold mb-2">Distributor</h2>
-                <p className="text-gray-700">{movie.distributor}</p>
-              </div>
-            )}
-
-            {movie.upc && (
-              <div className="mb-6">
-                <h2 className="text-xl font-bold mb-2">UPC</h2>
-                <p className="text-gray-700">{movie.upc}</p>
-              </div>
-            )}
-
-            {movie.notes && (
-              <div className="mb-6">
-                <h2 className="text-xl font-bold mb-2">Notes</h2>
-                <p className="text-gray-700 whitespace-pre-wrap">{movie.notes}</p>
-              </div>
-            )}
-
-            {movie.externalMatches && movie.externalMatches.length > 0 && (
-              <div className="mb-6">
-                <h2 className="text-xl font-bold mb-2">External Links</h2>
-                <div className="space-y-2">
-                  {movie.externalMatches.map((match) => (
-                    <div key={match.id}>
-                      {match.url ? (
-                        <a
-                          href={match.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-blue-600 hover:text-blue-800"
-                        >
-                          {match.source}: {match.externalId}
-                        </a>
-                      ) : (
-                        <span className="text-gray-700">
-                          {match.source}: {match.externalId}
-                        </span>
+                <h2 className="text-xl font-bold mb-3">Physical Copies ({movie.copies.length})</h2>
+                <div className="space-y-4">
+                  {movie.copies.map((copy) => (
+                    <div key={copy.id} className="border border-gray-200 p-4 rounded-lg bg-gray-50">
+                      <div className="grid md:grid-cols-2 gap-3">
+                        {copy.format && (
+                          <div>
+                            <span className="font-semibold text-gray-700">Format:</span>{' '}
+                            <span className="text-gray-900">{copy.format}</span>
+                          </div>
+                        )}
+                        {copy.edition && (
+                          <div>
+                            <span className="font-semibold text-gray-700">Edition:</span>{' '}
+                            <span className="text-gray-900">{copy.edition}</span>
+                          </div>
+                        )}
+                        {copy.region && (
+                          <div>
+                            <span className="font-semibold text-gray-700">Region:</span>{' '}
+                            <span className="text-gray-900">{copy.region}</span>
+                          </div>
+                        )}
+                        {copy.distributor && (
+                          <div>
+                            <span className="font-semibold text-gray-700">Distributor:</span>{' '}
+                            <span className="text-gray-900">{copy.distributor}</span>
+                          </div>
+                        )}
+                        {copy.upc && (
+                          <div>
+                            <span className="font-semibold text-gray-700">UPC:</span>{' '}
+                            <span className="text-gray-900">{copy.upc}</span>
+                          </div>
+                        )}
+                        {copy.condition && (
+                          <div>
+                            <span className="font-semibold text-gray-700">Condition:</span>{' '}
+                            <span className="text-gray-900">{copy.condition}</span>
+                          </div>
+                        )}
+                        {copy.location && (
+                          <div>
+                            <span className="font-semibold text-gray-700">Location:</span>{' '}
+                            <span className="text-gray-900">{copy.location}</span>
+                          </div>
+                        )}
+                        {(copy.hasSlipcover || copy.isSealed) && (
+                          <div className="md:col-span-2 flex gap-2">
+                            {copy.hasSlipcover && (
+                              <span className="bg-indigo-100 text-indigo-800 px-2 py-1 rounded text-sm">
+                                Has Slipcover
+                              </span>
+                            )}
+                            {copy.isSealed && (
+                              <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-sm">
+                                Sealed
+                              </span>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                      {copy.notes && (
+                        <div className="mt-3 pt-3 border-t border-gray-300">
+                          <span className="font-semibold text-gray-700">Notes:</span>
+                          <p className="text-gray-700 whitespace-pre-wrap mt-1">{copy.notes}</p>
+                        </div>
                       )}
                     </div>
                   ))}
