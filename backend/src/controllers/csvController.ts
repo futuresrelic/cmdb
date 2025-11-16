@@ -54,13 +54,11 @@ export const importFromCSV = asyncHandler(async (req: Request, res: Response) =>
             mode: 'insensitive'
           },
           year: row.year ? parseInt(row.year) : undefined
+        },
+        include: {
+          externalMatches: true
         }
       });
-
-      if (existing) {
-        skipped++;
-        continue;
-      }
 
       // Parse year
       let year = null;
@@ -92,81 +90,153 @@ export const importFromCSV = asyncHandler(async (req: Request, res: Response) =>
         }
       }
 
-      // Check for TMDB or IMDB IDs and fetch additional data
-      let externalData: any = null;
-      let sourceType = 'MANUAL';
+      // Fetch data from ALL external sources
       const tmdbId = row.tmdb_id || row.tmdbId || row.TMDB_ID;
       const imdbId = row.imdb_id || row.imdbId || row.IMDB_ID;
+      const externalDataSources: any = {
+        tmdb: null,
+        imdb: null
+      };
+      let sourceType = 'MANUAL';
+      let fetchedAny = false;
 
-      try {
-        // Try TMDB first if ID is provided
-        if (tmdbId && tmdbId !== '') {
-          try {
-            const tmdbData = await tmdbService.getMovieDetails(parseInt(tmdbId));
-            externalData = {
-              plot: tmdbData.overview,
-              tagline: tmdbData.tagline,
-              language: tmdbData.original_language,
-              posterUrl: tmdbService.getPosterUrl(tmdbData.poster_path),
-              backdropUrl: tmdbService.getBackdropUrl(tmdbData.backdrop_path),
-              rating: tmdbData.vote_average,
-              runtime: tmdbData.runtime,
-              originalTitle: tmdbData.original_title,
-              year: tmdbData.release_date ? parseInt(tmdbData.release_date.substring(0, 4)) : null
-            };
-            sourceType = 'TMDB';
-            enriched++;
-          } catch (error) {
-            console.log(`Failed to fetch TMDB data for ID ${tmdbId}:`, error);
-          }
+      // Fetch from TMDB if ID provided
+      if (tmdbId && tmdbId !== '') {
+        try {
+          const tmdbData = await tmdbService.getMovieDetails(parseInt(tmdbId));
+          externalDataSources.tmdb = {
+            plot: tmdbData.overview,
+            tagline: tmdbData.tagline,
+            language: tmdbData.original_language,
+            posterUrl: tmdbService.getPosterUrl(tmdbData.poster_path),
+            backdropUrl: tmdbService.getBackdropUrl(tmdbData.backdrop_path),
+            rating: tmdbData.vote_average,
+            runtime: tmdbData.runtime,
+            originalTitle: tmdbData.original_title,
+            year: tmdbData.release_date ? parseInt(tmdbData.release_date.substring(0, 4)) : null,
+            contentRating: tmdbData.release_dates?.results?.find((r: any) => r.iso_3166_1 === 'US')?.release_dates?.[0]?.certification || null
+          };
+          fetchedAny = true;
+        } catch (error) {
+          console.log(`Failed to fetch TMDB data for ID ${tmdbId}:`, error);
         }
-
-        // Try IMDB if TMDB failed or wasn't available
-        if (!externalData && imdbId && imdbId !== '') {
-          try {
-            const imdbData = await omdbService.getMovieByImdbId(imdbId);
-            if (imdbData) {
-              externalData = {
-                plot: imdbData.Plot !== 'N/A' ? imdbData.Plot : null,
-                language: imdbData.Language !== 'N/A' ? imdbData.Language : null,
-                country: imdbData.Country !== 'N/A' ? imdbData.Country : null,
-                posterUrl: imdbData.Poster !== 'N/A' ? imdbData.Poster : null,
-                rating: imdbData.imdbRating !== 'N/A' ? parseFloat(imdbData.imdbRating) : null,
-                runtime: imdbData.Runtime !== 'N/A' ? parseInt(imdbData.Runtime) : null,
-                year: imdbData.Year !== 'N/A' ? parseInt(imdbData.Year) : null
-              };
-              sourceType = 'IMDB';
-              enriched++;
-            }
-          } catch (error) {
-            console.log(`Failed to fetch IMDB data for ID ${imdbId}:`, error);
-          }
-        }
-      } catch (error) {
-        // Silently continue if external API fails
-        console.log('External API fetch failed:', error);
       }
 
-      // Create movie data, preferring external data but allowing CSV to override
+      // Fetch from IMDB (via OMDB) if ID provided
+      if (imdbId && imdbId !== '') {
+        try {
+          const imdbData = await omdbService.getMovieByImdbId(imdbId);
+          if (imdbData) {
+            externalDataSources.imdb = {
+              plot: imdbData.Plot !== 'N/A' ? imdbData.Plot : null,
+              language: imdbData.Language !== 'N/A' ? imdbData.Language : null,
+              country: imdbData.Country !== 'N/A' ? imdbData.Country : null,
+              posterUrl: imdbData.Poster !== 'N/A' ? imdbData.Poster : null,
+              rating: imdbData.imdbRating !== 'N/A' ? parseFloat(imdbData.imdbRating) : null,
+              runtime: imdbData.Runtime !== 'N/A' ? parseInt(imdbData.Runtime) : null,
+              year: imdbData.Year !== 'N/A' ? parseInt(imdbData.Year) : null,
+              contentRating: imdbData.Rated !== 'N/A' ? imdbData.Rated : null
+            };
+            fetchedAny = true;
+          }
+        } catch (error) {
+          console.log(`Failed to fetch IMDB data for ID ${imdbId}:`, error);
+        }
+      }
+
+      // Determine source type
+      if (externalDataSources.tmdb && externalDataSources.imdb) {
+        sourceType = 'HYBRID';
+        enriched++;
+      } else if (externalDataSources.tmdb) {
+        sourceType = 'TMDB';
+        enriched++;
+      } else if (externalDataSources.imdb) {
+        sourceType = 'IMDB';
+        enriched++;
+      }
+
+      // Merge data from all sources (CSV > TMDB > IMDB)
+      const mergedData = existing ? { ...existing } : {};
+
+      // Helper to get first non-null value
+      const firstValue = (...values: any[]) => values.find(v => v !== null && v !== undefined) || null;
+
       const movieData: any = {
         title,
-        originalTitle: row.originalTitle || row.original_title || row.originalName || externalData?.originalTitle || null,
-        year: year || externalData?.year || null,
-        runtime: runtime || externalData?.runtime || null,
-        plot: row.plot || row.Plot || row.overview || row.description || externalData?.plot || null,
-        tagline: row.tagline || row.Tagline || externalData?.tagline || null,
-        language: row.language || row.Language || row.original_language || externalData?.language || null,
-        country: row.country || row.Country || externalData?.country || null,
-        posterUrl: row.posterUrl || row.poster_url || row.Poster || externalData?.posterUrl || null,
-        backdropUrl: row.backdropUrl || row.backdrop_url || externalData?.backdropUrl || null,
-        sourceType,
-        rating: rating || externalData?.rating || null
+        originalTitle: firstValue(row.originalTitle, row.original_title, row.originalName, externalDataSources.tmdb?.originalTitle, externalDataSources.imdb?.originalTitle, mergedData.originalTitle),
+        year: firstValue(year, externalDataSources.tmdb?.year, externalDataSources.imdb?.year, mergedData.year),
+        runtime: firstValue(runtime, externalDataSources.tmdb?.runtime, externalDataSources.imdb?.runtime, mergedData.runtime),
+        plot: firstValue(row.plot, row.Plot, row.overview, row.description, externalDataSources.tmdb?.plot, externalDataSources.imdb?.plot, mergedData.plot),
+        tagline: firstValue(row.tagline, row.Tagline, externalDataSources.tmdb?.tagline, mergedData.tagline),
+        language: firstValue(row.language, row.Language, row.original_language, externalDataSources.tmdb?.language, externalDataSources.imdb?.language, mergedData.language),
+        country: firstValue(row.country, row.Country, externalDataSources.imdb?.country, mergedData.country),
+        posterUrl: firstValue(row.posterUrl, row.poster_url, row.Poster, externalDataSources.tmdb?.posterUrl, externalDataSources.imdb?.posterUrl, mergedData.posterUrl),
+        backdropUrl: firstValue(row.backdropUrl, row.backdrop_url, externalDataSources.tmdb?.backdropUrl, mergedData.backdropUrl),
+        contentRating: firstValue(row.contentRating, row.rated, externalDataSources.tmdb?.contentRating, externalDataSources.imdb?.contentRating, mergedData.contentRating),
+        sourceType: existing ? (existing.sourceType === 'MANUAL' && fetchedAny ? sourceType : (fetchedAny ? 'HYBRID' : existing.sourceType)) : sourceType,
+        rating: firstValue(rating, externalDataSources.tmdb?.rating, externalDataSources.imdb?.rating, mergedData.rating)
       };
 
-      // Create the movie
-      const movie = await prisma.movie.create({
-        data: movieData
-      });
+      // Create or update the movie
+      const movie = existing
+        ? await prisma.movie.update({
+            where: { id: existing.id },
+            data: movieData
+          })
+        : await prisma.movie.create({
+            data: movieData
+          });
+
+      // Create/update ExternalMatch records for TMDB
+      if (tmdbId && tmdbId !== '') {
+        await prisma.externalMatch.upsert({
+          where: {
+            movieId_source: {
+              movieId: movie.id,
+              source: 'TMDB'
+            }
+          },
+          create: {
+            movieId: movie.id,
+            source: 'TMDB',
+            externalId: tmdbId.toString(),
+            url: `https://www.themoviedb.org/movie/${tmdbId}`,
+            rating: externalDataSources.tmdb?.rating || null,
+            voteCount: null
+          },
+          update: {
+            externalId: tmdbId.toString(),
+            url: `https://www.themoviedb.org/movie/${tmdbId}`,
+            rating: externalDataSources.tmdb?.rating || null
+          }
+        });
+      }
+
+      // Create/update ExternalMatch records for IMDB
+      if (imdbId && imdbId !== '') {
+        await prisma.externalMatch.upsert({
+          where: {
+            movieId_source: {
+              movieId: movie.id,
+              source: 'IMDB'
+            }
+          },
+          create: {
+            movieId: movie.id,
+            source: 'IMDB',
+            externalId: imdbId,
+            url: `https://www.imdb.com/title/${imdbId}/`,
+            rating: externalDataSources.imdb?.rating || null,
+            voteCount: null
+          },
+          update: {
+            externalId: imdbId,
+            url: `https://www.imdb.com/title/${imdbId}/`,
+            rating: externalDataSources.imdb?.rating || null
+          }
+        });
+      }
 
       // If physical media data is present, create a Copy record
       const hasPhysicalData =

@@ -34,8 +34,10 @@ model Movie {
   // Source tracking
   sourceType  SourceType @default(MANUAL)
 
-  // Ratings
-  rating      Float?    // User/CMDB rating
+  // Ratings & Classification
+  rating         Float?    // User/CMDB rating
+  contentRating  String?   // PG, PG-13, R, NC-17, etc.
+  certification  String?   // Regional certification (US: R, UK: 15, etc.)
 
   // Relationships
   externalMatches ExternalMatch[]
