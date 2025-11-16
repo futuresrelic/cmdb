@@ -114,7 +114,7 @@ export const importFromCSV = asyncHandler(async (req: Request, res: Response) =>
             runtime: tmdbData.runtime,
             originalTitle: tmdbData.original_title,
             year: tmdbData.release_date ? parseInt(tmdbData.release_date.substring(0, 4)) : null,
-            contentRating: tmdbData.release_dates?.results?.find((r: any) => r.iso_3166_1 === 'US')?.release_dates?.[0]?.certification || null
+            contentRating: null // TODO: Fetch from TMDB certification endpoint
           };
           fetchedAny = true;
         } catch (error) {
@@ -157,25 +157,25 @@ export const importFromCSV = asyncHandler(async (req: Request, res: Response) =>
       }
 
       // Merge data from all sources (CSV > TMDB > IMDB)
-      const mergedData = existing ? { ...existing } : {};
+      const mergedData: any = existing ? { ...existing } : {};
 
       // Helper to get first non-null value
       const firstValue = (...values: any[]) => values.find(v => v !== null && v !== undefined) || null;
 
       const movieData: any = {
         title,
-        originalTitle: firstValue(row.originalTitle, row.original_title, row.originalName, externalDataSources.tmdb?.originalTitle, externalDataSources.imdb?.originalTitle, mergedData.originalTitle),
-        year: firstValue(year, externalDataSources.tmdb?.year, externalDataSources.imdb?.year, mergedData.year),
-        runtime: firstValue(runtime, externalDataSources.tmdb?.runtime, externalDataSources.imdb?.runtime, mergedData.runtime),
-        plot: firstValue(row.plot, row.Plot, row.overview, row.description, externalDataSources.tmdb?.plot, externalDataSources.imdb?.plot, mergedData.plot),
-        tagline: firstValue(row.tagline, row.Tagline, externalDataSources.tmdb?.tagline, mergedData.tagline),
-        language: firstValue(row.language, row.Language, row.original_language, externalDataSources.tmdb?.language, externalDataSources.imdb?.language, mergedData.language),
-        country: firstValue(row.country, row.Country, externalDataSources.imdb?.country, mergedData.country),
-        posterUrl: firstValue(row.posterUrl, row.poster_url, row.Poster, externalDataSources.tmdb?.posterUrl, externalDataSources.imdb?.posterUrl, mergedData.posterUrl),
-        backdropUrl: firstValue(row.backdropUrl, row.backdrop_url, externalDataSources.tmdb?.backdropUrl, mergedData.backdropUrl),
-        contentRating: firstValue(row.contentRating, row.rated, externalDataSources.tmdb?.contentRating, externalDataSources.imdb?.contentRating, mergedData.contentRating),
+        originalTitle: firstValue(row.originalTitle, row.original_title, row.originalName, externalDataSources.tmdb?.originalTitle, externalDataSources.imdb?.originalTitle, mergedData?.originalTitle),
+        year: firstValue(year, externalDataSources.tmdb?.year, externalDataSources.imdb?.year, mergedData?.year),
+        runtime: firstValue(runtime, externalDataSources.tmdb?.runtime, externalDataSources.imdb?.runtime, mergedData?.runtime),
+        plot: firstValue(row.plot, row.Plot, row.overview, row.description, externalDataSources.tmdb?.plot, externalDataSources.imdb?.plot, mergedData?.plot),
+        tagline: firstValue(row.tagline, row.Tagline, externalDataSources.tmdb?.tagline, mergedData?.tagline),
+        language: firstValue(row.language, row.Language, row.original_language, externalDataSources.tmdb?.language, externalDataSources.imdb?.language, mergedData?.language),
+        country: firstValue(row.country, row.Country, externalDataSources.imdb?.country, mergedData?.country),
+        posterUrl: firstValue(row.posterUrl, row.poster_url, row.Poster, externalDataSources.tmdb?.posterUrl, externalDataSources.imdb?.posterUrl, mergedData?.posterUrl),
+        backdropUrl: firstValue(row.backdropUrl, row.backdrop_url, externalDataSources.tmdb?.backdropUrl, mergedData?.backdropUrl),
+        contentRating: firstValue(row.contentRating, row.rated, externalDataSources.tmdb?.contentRating, externalDataSources.imdb?.contentRating, mergedData?.contentRating),
         sourceType: existing ? (existing.sourceType === 'MANUAL' && fetchedAny ? sourceType : (fetchedAny ? 'HYBRID' : existing.sourceType)) : sourceType,
-        rating: firstValue(rating, externalDataSources.tmdb?.rating, externalDataSources.imdb?.rating, mergedData.rating)
+        rating: firstValue(rating, externalDataSources.tmdb?.rating, externalDataSources.imdb?.rating, mergedData?.rating)
       };
 
       // Create or update the movie
