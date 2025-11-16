@@ -27,7 +27,8 @@ function ImportCSVPage() {
       const response = await axios.post('/api/csv/import', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
-        }
+        },
+        timeout: 600000 // 10 minutes timeout for large CSV imports with external API calls
       });
 
       setResult(response.data);
