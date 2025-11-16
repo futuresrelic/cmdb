@@ -68,46 +68,53 @@ function BrowseMoviesPage() {
           </Link>
         </div>
       ) : (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
           {movies.map((movie) => (
             <Link
               key={movie.id}
               to={`/movie/${movie.id}`}
-              className="bg-white rounded-lg shadow hover:shadow-xl transition overflow-hidden"
+              className="group"
             >
-              {movie.posterUrl ? (
-                <img
-                  src={movie.posterUrl}
-                  alt={movie.title}
-                  className="w-full h-80 object-cover"
-                />
-              ) : (
-                <div className="w-full h-80 bg-gray-200 flex items-center justify-center">
-                  <span className="text-6xl">🎬</span>
-                </div>
-              )}
-              <div className="p-4">
-                <h3 className="font-bold text-lg mb-1 truncate">{movie.title}</h3>
-                {movie.year && (
-                  <p className="text-gray-600 text-sm mb-2">{movie.year}</p>
+              <div className="relative overflow-hidden rounded-lg shadow-md hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+                {movie.posterUrl ? (
+                  <div className="relative" style={{ aspectRatio: '2/3' }}>
+                    <img
+                      src={movie.posterUrl}
+                      alt={movie.title}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ) : (
+                  <div className="bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center" style={{ aspectRatio: '2/3' }}>
+                    <span className="text-6xl">🎬</span>
+                  </div>
                 )}
-                <div className="flex items-center gap-2">
-                  <span
-                    className={`text-xs px-2 py-1 rounded ${
-                      movie.sourceType === 'MANUAL'
-                        ? 'bg-blue-100 text-blue-800'
-                        : movie.sourceType === 'TMDB'
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-yellow-100 text-yellow-800'
-                    }`}
-                  >
-                    {movie.sourceType}
-                  </span>
-                  {movie.rating && (
-                    <span className="text-xs text-gray-600">
-                      ⭐ {movie.rating.toFixed(1)}
-                    </span>
-                  )}
+                {/* Overlay on hover */}
+                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-70 transition-all duration-300 flex items-end">
+                  <div className="p-3 w-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0">
+                    <h3 className="font-bold text-white text-sm mb-1 line-clamp-2">{movie.title}</h3>
+                    {movie.year && (
+                      <p className="text-gray-300 text-xs mb-2">{movie.year}</p>
+                    )}
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span
+                        className={`text-xs px-2 py-0.5 rounded ${
+                          movie.sourceType === 'MANUAL'
+                            ? 'bg-blue-500 text-white'
+                            : movie.sourceType === 'TMDB'
+                            ? 'bg-green-500 text-white'
+                            : 'bg-yellow-500 text-white'
+                        }`}
+                      >
+                        {movie.sourceType}
+                      </span>
+                      {movie.rating && (
+                        <span className="text-xs text-white font-semibold">
+                          ⭐ {movie.rating.toFixed(1)}
+                        </span>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
             </Link>
