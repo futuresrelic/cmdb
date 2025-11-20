@@ -1,7 +1,7 @@
 {
-  "name": "cmdb-backend",
+  "name": "umdb-backend",
   "version": "1.0.0",
-  "description": "CMDB Backend API",
+  "description": "UMDB Backend API - Universal Media Database",
   "main": "dist/index.js",
   "scripts": {
     "dev": "tsx watch src/index.ts",

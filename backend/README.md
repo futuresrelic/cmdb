@@ -1,4 +1,4 @@
-# CMDB Backend
+# UMDB Backend
 
 Backend API server for the Consumer Movie Database.
 

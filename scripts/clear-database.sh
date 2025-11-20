@@ -15,7 +15,7 @@ fi
 echo "Clearing database..."
 
 # Execute SQL commands to clear data
-docker exec -i cmdb-postgres psql -U cmdb -d cmdb <<EOF
+docker exec -i umdb-postgres psql -U umdb -d umdb <<EOF
 DELETE FROM "Copy";
 DELETE FROM "ExternalMatch";
 DELETE FROM "MovieGenre";

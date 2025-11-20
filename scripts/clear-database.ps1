@@ -23,7 +23,7 @@ DELETE FROM "Genre";
 DELETE FROM "Movie";
 "@
 
-$sql | docker exec -i cmdb-postgres psql -U cmdb -d cmdb
+$sql | docker exec -i umdb-postgres psql -U umdb -d umdb
 
 Write-Host "Database cleared successfully!" -ForegroundColor Green
 Write-Host "You can now re-import your CSV file." -ForegroundColor Green

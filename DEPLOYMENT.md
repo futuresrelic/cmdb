@@ -1,11 +1,11 @@
-# CMDB Deployment Guide
+# UMDB Deployment Guide
 
-This guide covers deploying CMDB to your server at cmdb.futuresrelic.com.
+This guide covers deploying UMDB to your server at umdb.futuresrelic.com.
 
 ## Prerequisites
 
 - Server with Docker and Docker Compose installed
-- Domain pointing to your server (cmdb.futuresrelic.com)
+- Domain pointing to your server (umdb.futuresrelic.com)
 - TMDB API key (https://www.themoviedb.org/settings/api)
 - OMDB API key (http://www.omdbapi.com/apikey.aspx)
 
@@ -28,8 +28,8 @@ This guide covers deploying CMDB to your server at cmdb.futuresrelic.com.
 ### 2. Clone Repository on Server
 
 ```bash
-git clone <repository-url> cmdb
-cd cmdb
+git clone <repository-url> umdb
+cd umdb
 ```
 
 ### 3. Configure Environment
@@ -44,7 +44,7 @@ Edit the `.env` file with your values:
 DB_PASSWORD=your_secure_password_here
 TMDB_API_KEY=your_tmdb_api_key
 OMDB_API_KEY=your_omdb_api_key
-CORS_ORIGIN=https://cmdb.futuresrelic.com
+CORS_ORIGIN=https://umdb.futuresrelic.com
 ```
 
 ### 4. Deploy with Docker
@@ -72,7 +72,7 @@ For production with SSL/HTTPS, you'll want to use a reverse proxy like Nginx or 
 
 Create `Caddyfile`:
 ```
-cmdb.futuresrelic.com {
+umdb.futuresrelic.com {
     reverse_proxy frontend:80
 }
 ```
@@ -89,14 +89,14 @@ caddy:
     - caddy-data:/data
     - caddy-config:/config
   networks:
-    - cmdb-network
+    - umdb-network
 ```
 
 ### Option 2: Using Nginx with Let's Encrypt
 
 Install certbot on host and get SSL certificate:
 ```bash
-sudo certbot certonly --standalone -d cmdb.futuresrelic.com
+sudo certbot certonly --standalone -d umdb.futuresrelic.com
 ```
 
 Create nginx config with SSL and proxy to the Docker containers.
@@ -114,10 +114,10 @@ Create nginx config with SSL and proxy to the Docker containers.
 
 ```bash
 # Backup
-docker-compose exec postgres pg_dump -U cmdb cmdb > backup.sql
+docker-compose exec postgres pg_dump -U umdb umdb > backup.sql
 
 # Restore
-docker-compose exec -T postgres psql -U cmdb cmdb < backup.sql
+docker-compose exec -T postgres psql -U umdb umdb < backup.sql
 ```
 
 ### View Logs

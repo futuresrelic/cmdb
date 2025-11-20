@@ -1,4 +1,4 @@
-# CMDB Setup Instructions
+# UMDB Setup Instructions
 
 ## Environment Variables
 
@@ -20,14 +20,14 @@ Create a `.env` file in the root directory of the project with the following con
 
 ```env
 # Database
-DB_PASSWORD=cmdb_password
+DB_PASSWORD=umdb_password
 
 # External APIs
 TMDB_API_KEY=your_actual_tmdb_key_here
 OMDB_API_KEY=your_actual_omdb_key_here
 
 # CORS (for production, set to your domain)
-CORS_ORIGIN=https://cmdb.futuresrelic.com
+CORS_ORIGIN=https://umdb.futuresrelic.com
 ```
 
 ### Deployment

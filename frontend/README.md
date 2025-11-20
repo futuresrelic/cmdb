@@ -1,4 +1,4 @@
-# CMDB Frontend
+# UMDB Frontend
 
 React frontend for the Consumer Movie Database.
 

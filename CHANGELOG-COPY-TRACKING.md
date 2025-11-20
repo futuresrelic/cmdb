@@ -2,7 +2,7 @@
 
 ## Overview
 
-This update adds support for tracking **multiple physical copies/editions** of the same movie. Previously, CMDB could only track one set of physical details per movie. Now you can track as many copies as you want (e.g., DVD Standard, DVD Special Edition, Blu-ray, 4K UHD, etc.).
+This update adds support for tracking **multiple physical copies/editions** of the same movie. Previously, UMDB could only track one set of physical details per movie. Now you can track as many copies as you want (e.g., DVD Standard, DVD Special Edition, Blu-ray, 4K UHD, etc.).
 
 ## What's Changed
 
@@ -38,7 +38,7 @@ The migration script automatically:
 
 ```bash
 # Backup your database
-pg_dump cmdb > cmdb_backup_$(date +%Y%m%d).sql
+pg_dump umdb > umdb_backup_$(date +%Y%m%d).sql
 ```
 
 ### Step 1: Update Dependencies
@@ -135,7 +135,7 @@ npm run dev    # For development
 3. **CSV Import Update**
    - Support importing multiple copies per movie
    - Handle copy-specific columns (format, edition, region, etc.)
-   - Update cineshelf-to-cmdb.js converter
+   - Update cineshelf-to-umdb.js converter
 
 4. **Movie Card Updates**
    - Show copy count badge on movie cards
@@ -147,13 +147,13 @@ After running the migration, verify:
 
 ```bash
 # Check if Copy table was created
-psql cmdb -c "\d \"Copy\""
+psql umdb -c "\d \"Copy\""
 
 # Check if existing data was migrated
-psql cmdb -c "SELECT COUNT(*) FROM \"Copy\";"
+psql umdb -c "SELECT COUNT(*) FROM \"Copy\";"
 
 # Check a movie with its copies
-psql cmdb -c "SELECT m.title, c.format, c.edition, c.upc FROM \"Movie\" m LEFT JOIN \"Copy\" c ON m.id = c.\"movieId\" LIMIT 10;"
+psql umdb -c "SELECT m.title, c.format, c.edition, c.upc FROM \"Movie\" m LEFT JOIN \"Copy\" c ON m.id = c.\"movieId\" LIMIT 10;"
 ```
 
 ## Rollback (If Needed)
@@ -162,7 +162,7 @@ If something goes wrong:
 
 ```bash
 # Restore from backup
-psql cmdb < cmdb_backup_YYYYMMDD.sql
+psql umdb < umdb_backup_YYYYMMDD.sql
 
 # OR use Prisma migrate
 npx prisma migrate reset

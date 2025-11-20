@@ -1,10 +1,10 @@
-# 🎬 CMDB - Consumer Movie Database
+# 🎬 UMDB - Consumer Movie Database
 
 A comprehensive movie database system designed to catalog movies that aren't found in mainstream databases like IMDB or TMDB, with special focus on rare releases, Quebec-origin content, and regional DVDs.
 
 ## 🎯 Purpose
 
-CMDB solves a real problem: **What do you do when your DVD isn't in any database?**
+UMDB solves a real problem: **What do you do when your DVD isn't in any database?**
 
 - **Catch-all database** for movies missing from major platforms
 - **Manual entry** of data from physical DVD copies (format, distributor, UPC)
@@ -33,7 +33,7 @@ Perfect for collectors, archivists, and cinephiles with rare or regional content
 
 ### Import/Export
 - 📥 **CSV Import** - Bulk import movies from CSV files
-- 🔄 **CineShelf Converter** - Convert CineShelf JSON exports to CMDB CSV format (see `scripts/README-CINESHELF.md`)
+- 🔄 **CineShelf Converter** - Convert CineShelf JSON exports to UMDB CSV format (see `scripts/README-CINESHELF.md`)
 - Export functionality (planned)
 
 ## 🏗️ Tech Stack
@@ -61,8 +61,8 @@ Perfect for collectors, archivists, and cinephiles with rare or regional content
 
 ```bash
 # 1. Clone repository
-git clone <repo-url> cmdb
-cd cmdb
+git clone <repo-url> umdb
+cd umdb
 
 # 2. Configure environment
 cp .env.example .env
@@ -81,7 +81,7 @@ Access at http://localhost
 ./scripts/dev-setup.sh
 
 # 2. Set up database
-createdb cmdb
+createdb umdb
 cd backend && npm run prisma:migrate
 
 # 3. Start backend (terminal 1)
@@ -117,7 +117,7 @@ See [DEVELOPMENT.md](DEVELOPMENT.md) for detailed setup.
 ## 📦 Project Structure
 
 ```
-cmdb/
+umdb/
 ├── backend/              # Node.js API server
 │   ├── src/
 │   │   ├── controllers/  # Request handlers
@@ -144,13 +144,13 @@ cmdb/
 
 ## 🌐 Deployment
 
-**Live Site:** https://cmdb.futuresrelic.com
+**Live Site:** https://umdb.futuresrelic.com
 
 Deploy to your own server:
 ```bash
 # On server
-git clone <repo-url> cmdb
-cd cmdb
+git clone <repo-url> umdb
+cd umdb
 cp .env.example .env
 # Edit .env with production values
 docker-compose up -d

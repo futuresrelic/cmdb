@@ -1,10 +1,10 @@
-# CineShelf to CMDB Converter
+# CineShelf to UMDB Converter
 
-Converts CineShelf JSON exports to CMDB-compatible CSV format.
+Converts CineShelf JSON exports to UMDB-compatible CSV format.
 
 ## Problem
 
-CineShelf exports movie collections as JSON files, but CMDB imports data via CSV. This tool bridges the gap by converting the JSON export to the proper CSV format expected by CMDB.
+CineShelf exports movie collections as JSON files, but UMDB imports data via CSV. This tool bridges the gap by converting the JSON export to the proper CSV format expected by UMDB.
 
 ## Usage
 
@@ -16,26 +16,26 @@ In CineShelf, export your collection to get a JSON file (e.g., `my-collection.js
 
 ```bash
 cd scripts
-node cineshelf-to-cmdb.js <input.json> <output.csv>
+node cineshelf-to-umdb.js <input.json> <output.csv>
 ```
 
 **Example:**
 ```bash
-node cineshelf-to-cmdb.js my-cineshelf-export.json movies.csv
+node cineshelf-to-umdb.js my-cineshelf-export.json movies.csv
 ```
 
-### Step 3: Import to CMDB
+### Step 3: Import to UMDB
 
-1. Open CMDB in your browser
+1. Open UMDB in your browser
 2. Go to "Import CSV" page
 3. Upload the generated CSV file
 4. Review import results
 
 ## Field Mapping
 
-The converter maps CineShelf fields to CMDB fields as follows:
+The converter maps CineShelf fields to UMDB fields as follows:
 
-| CineShelf Field | CMDB Field | Notes |
+| CineShelf Field | UMDB Field | Notes |
 |----------------|------------|-------|
 | `title` | `title` | Required |
 | `display_title` | `originalTitle` | Falls back to title if not set |
@@ -50,7 +50,7 @@ The converter maps CineShelf fields to CMDB fields as follows:
 
 ### Additional Fields (Preserved)
 
-These CineShelf-specific fields are included in the CSV but won't be imported to CMDB (they're for reference):
+These CineShelf-specific fields are included in the CSV but won't be imported to UMDB (they're for reference):
 
 - `tmdb_id` - TMDB ID for reference
 - `director` - Director name
@@ -95,7 +95,7 @@ title,originalTitle,year,runtime,plot,tagline,language,country,posterUrl,physica
 A test sample is included:
 
 ```bash
-node cineshelf-to-cmdb.js test-cineshelf-sample.json test-output.csv
+node cineshelf-to-umdb.js test-cineshelf-sample.json test-output.csv
 ```
 
 ## Troubleshooting
@@ -104,13 +104,13 @@ node cineshelf-to-cmdb.js test-cineshelf-sample.json test-output.csv
 - Make sure your file is a valid CineShelf export with a `collection` array
 - Verify the JSON is properly formatted (use a JSON validator)
 
-### Movies not importing in CMDB
+### Movies not importing in UMDB
 - Check that the CSV has a `title` column (required)
 - Verify the CSV is properly formatted (open in Excel/Sheets)
-- Check CMDB import page for specific error messages
+- Check UMDB import page for specific error messages
 
 ### Duplicate movies skipped
-- CMDB skips movies that already exist (based on title + year)
+- UMDB skips movies that already exist (based on title + year)
 - This is normal behavior to prevent duplicates
 
 ## Notes
@@ -126,4 +126,4 @@ If you encounter issues:
 1. Check that your CineShelf export is valid JSON
 2. Verify the script ran without errors
 3. Inspect the generated CSV file
-4. Check CMDB import logs for specific errors
+4. Check UMDB import logs for specific errors

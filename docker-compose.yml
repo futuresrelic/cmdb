@@ -4,31 +4,31 @@ services:
   # PostgreSQL Database
   postgres:
     image: postgres:16-alpine
-    container_name: cmdb-postgres
+    container_name: umdb-postgres
     environment:
-      POSTGRES_USER: cmdb
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-cmdb_password}
-      POSTGRES_DB: cmdb
+      POSTGRES_USER: umdb
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-umdb_password}
+      POSTGRES_DB: umdb
     volumes:
       - postgres-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U cmdb"]
+      test: ["CMD-SHELL", "pg_isready -U umdb"]
       interval: 10s
       timeout: 5s
       retries: 5
     networks:
-      - cmdb-network
+      - umdb-network
 
   # Backend API
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: cmdb-backend
+    container_name: umdb-backend
     environment:
-      DATABASE_URL: postgresql://cmdb:${DB_PASSWORD:-cmdb_password}@postgres:5432/cmdb?schema=public
+      DATABASE_URL: postgresql://umdb:${DB_PASSWORD:-umdb_password}@postgres:5432/umdb?schema=public
       PORT: 3001
       NODE_ENV: production
       TMDB_API_KEY: ${TMDB_API_KEY}
@@ -40,7 +40,7 @@ services:
       postgres:
         condition: service_healthy
     networks:
-      - cmdb-network
+      - umdb-network
     restart: unless-stopped
 
   # Frontend
@@ -48,18 +48,18 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: cmdb-frontend
+    container_name: umdb-frontend
     ports:
       - "80:80"
     depends_on:
       - backend
     networks:
-      - cmdb-network
+      - umdb-network
     restart: unless-stopped
 
 volumes:
   postgres-data:
 
 networks:
-  cmdb-network:
+  umdb-network:
     driver: bridge
