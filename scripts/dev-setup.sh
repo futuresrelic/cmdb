@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-echo "🎬 CMDB Development Setup"
+echo "🎬 UMDB Development Setup"
 echo "========================="
 echo ""
 
@@ -47,7 +47,7 @@ npm run prisma:generate
 
 echo ""
 echo "⚠️  Database setup required:"
-echo "1. Create PostgreSQL database: createdb cmdb"
+echo "1. Create PostgreSQL database: createdb umdb"
 echo "2. Update DATABASE_URL in backend/.env"
 echo "3. Run migrations: cd backend && npm run prisma:migrate"
 echo ""

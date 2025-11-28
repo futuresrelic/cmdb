@@ -135,6 +135,6 @@ The Matrix,The Matrix,1999,136,"A computer hacker learns from mysterious rebels 
 Inception,Inception,2010,148,"A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea.",Your mind is the scene of the crime,English,USA,,,Warner Bros,,,8.8`;
 
   res.setHeader('Content-Type', 'text/csv');
-  res.setHeader('Content-Disposition', 'attachment; filename=cmdb-template.csv');
+  res.setHeader('Content-Disposition', 'attachment; filename=umdb-template.csv');
   res.send(csv);
 });

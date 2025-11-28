@@ -35,10 +35,15 @@ model Movie {
   sourceType  SourceType @default(MANUAL)
 
   // Physical media details (for manual entries)
-  physicalFormat String? // DVD, Blu-ray, VHS, etc.
+  physicalFormat String? // DVD, Blu-ray, VHS, CD, Vinyl, etc.
   distributor    String?
-  upc            String? // Universal Product Code
+  upc            String? // Universal Product Code / Barcode
+  isbn           String? // For books (future expansion)
+  asin           String? // Amazon Standard Identification Number
   notes          String? @db.Text
+
+  // Media type classification
+  mediaType      MediaType @default(MOVIE)
 
   // Ratings
   rating      Float?    // User/CMDB rating
@@ -143,12 +148,17 @@ enum SourceType {
   TMDB        // Imported from TMDB
   IMDB        // Imported from IMDB
   OMDB        // Imported from OMDB
+  AMAZON      // Imported from Amazon
   HYBRID      // Mixed sources
 }
 
 enum ExternalSource {
   TMDB
   IMDB
+  AMAZON
+  MUSICBRAINZ  // For music/CDs
+  DISCOGS      // For vinyls/music
+  UMDB         // Self-reference for UMDB-exclusive entries
 }
 
 enum PersonRole {
@@ -159,4 +169,18 @@ enum PersonRole {
   CINEMATOGRAPHER
   EDITOR
   COMPOSER
+  ARTIST        // For music
+  MUSICIAN      // For music
+  BAND_MEMBER   // For music
+}
+
+enum MediaType {
+  MOVIE         // Films, movies
+  TV_SHOW       // TV series, episodes
+  MUSIC_ALBUM   // Music albums (CDs, digital)
+  VINYL         // Vinyl records
+  CD            // Audio CDs
+  BOOK          // Books (future)
+  GAME          // Video games (future)
+  OTHER         // Other media types
 }

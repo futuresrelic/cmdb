@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-echo "🎬 CMDB Setup Script"
+echo "🎬 UMDB Setup Script"
 echo "==================="
 echo ""
 
@@ -53,7 +53,7 @@ fi
 echo "✅ Docker and Docker Compose are installed"
 echo ""
 
-echo "Starting CMDB with Docker Compose..."
+echo "Starting UMDB with Docker Compose..."
 docker-compose up -d
 
 echo ""
@@ -61,7 +61,7 @@ echo "Waiting for services to be healthy..."
 sleep 10
 
 echo ""
-echo "✅ CMDB is now running!"
+echo "✅ UMDB is now running!"
 echo ""
 echo "Access the application at:"
 echo "  Frontend: http://localhost"

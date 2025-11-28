@@ -5,11 +5,11 @@ function HomePage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="text-center">
         <h1 className="text-5xl font-bold text-gray-900 mb-4">
-          Welcome to CMDB
+          Welcome to UMDB
         </h1>
         <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-          Consumer Movie Database - Your personal catalog for movies that aren't found
-          anywhere else. Perfect for rare releases, Quebec content, and regional DVDs.
+          Universal Media Database - Your universal catalog for ALL media that aren't found
+          anywhere else. Movies, music, physical media - if it's rare or regional, it belongs here.
         </p>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mt-12">
@@ -17,8 +17,8 @@ function HomePage() {
             <div className="text-4xl mb-4">✍️</div>
             <h2 className="text-2xl font-bold mb-3">Manual Entry</h2>
             <p className="text-gray-600 mb-4">
-              Enter movie details directly from your physical media. Perfect for
-              DVDs not in any database.
+              Enter media details directly from your physical collection. Perfect for
+              rare DVDs, vinyls, and media not in any database.
             </p>
             <Link
               to="/add"
@@ -32,8 +32,8 @@ function HomePage() {
             <div className="text-4xl mb-4">🔍</div>
             <h2 className="text-2xl font-bold mb-3">Search External</h2>
             <p className="text-gray-600 mb-4">
-              Find and import movies from TMDB and IMDB. Build your collection
-              quickly.
+              Find and import from TMDB, IMDB, Amazon, and more. Build your collection
+              from multiple sources.
             </p>
             <Link
               to="/search-external"
@@ -47,8 +47,8 @@ function HomePage() {
             <div className="text-4xl mb-4">📚</div>
             <h2 className="text-2xl font-bold mb-3">Browse Collection</h2>
             <p className="text-gray-600 mb-4">
-              View and manage your entire movie collection. Search, filter, and
-              organize.
+              View and manage your entire media collection. Search, filter, and
+              organize everything in one place.
             </p>
             <Link
               to="/browse"
@@ -75,27 +75,31 @@ function HomePage() {
         </div>
 
         <div className="mt-16 bg-blue-50 rounded-lg p-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Why CMDB?</h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">Why UMDB?</h2>
           <div className="text-left max-w-3xl mx-auto space-y-4 text-gray-700">
             <p>
               <strong>🌍 For rare and regional content:</strong> Quebec films, independent releases,
-              and content missing from mainstream databases.
+              vinyls, CDs - ANY media missing from mainstream databases.
             </p>
             <p>
-              <strong>🔗 Connect to external sources:</strong> When available, link your movies to
-              TMDB and IMDB for additional data.
+              <strong>🔗 Connect to multiple sources:</strong> Link your media to
+              TMDB, IMDB, Amazon, OMDB, and more for enriched data.
             </p>
             <p>
-              <strong>📀 Physical media tracking:</strong> Record details like format (DVD, Blu-ray),
-              distributor, and UPC codes.
+              <strong>📀 Universal media tracking:</strong> Record details for DVDs, Blu-rays, vinyls,
+              CDs - with format, distributor, and UPC codes.
             </p>
             <p>
-              <strong>🎯 Central repository:</strong> A single source of truth for all your movie
-              data, integrating manual and external sources.
+              <strong>🎯 Extensible architecture:</strong> A single source of truth for all your media
+              data, designed to support future platforms and media types.
             </p>
             <p>
               <strong>📥 Bulk import:</strong> Import from CSV files - migrate from CineShelf or
               other apps in seconds.
+            </p>
+            <p>
+              <strong>🔄 CineShelf integration:</strong> Match your CineShelf entries with IMDB, TMDB,
+              and UMDB data for complete metadata.
             </p>
           </div>
         </div>

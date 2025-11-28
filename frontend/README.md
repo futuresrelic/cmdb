@@ -1,6 +1,6 @@
-# CMDB Frontend
+# UMDB Frontend
 
-React frontend for the Consumer Movie Database.
+React frontend for the Universal Media Database.
 
 ## Setup
 

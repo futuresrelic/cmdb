@@ -15,7 +15,7 @@ function App() {
             <div className="flex items-center justify-between h-16">
               <div className="flex items-center">
                 <Link to="/" className="flex items-center">
-                  <span className="text-2xl font-bold">🎬 CMDB</span>
+                  <span className="text-2xl font-bold">🎬 UMDB</span>
                 </Link>
                 <div className="ml-10 flex items-baseline space-x-4">
                   <Link
@@ -62,7 +62,7 @@ function App() {
         <footer className="bg-gray-900 text-white mt-16">
           <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
             <p className="text-center text-gray-400">
-              CMDB - Consumer Movie Database &copy; {new Date().getFullYear()}
+              UMDB - Universal Media Database &copy; {new Date().getFullYear()}
             </p>
           </div>
         </footer>

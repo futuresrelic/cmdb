@@ -81,7 +81,7 @@ export const importFromTMDB = asyncHandler(async (req: Request, res: Response) =
 
   if (existing) {
     return res.json({
-      message: 'Movie already exists in CMDB',
+      message: 'Movie already exists in UMDB',
       movie: existing.movie
     });
   }
@@ -244,7 +244,7 @@ export const importFromIMDB = asyncHandler(async (req: Request, res: Response) =
 
   if (existing) {
     return res.json({
-      message: 'Movie already exists in CMDB',
+      message: 'Movie already exists in UMDB',
       movie: existing.movie
     });
   }

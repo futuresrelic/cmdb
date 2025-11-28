@@ -1,6 +1,6 @@
-# CMDB Backend
+# UMDB Backend
 
-Backend API server for the Consumer Movie Database.
+Backend API server for the Universal Media Database.
 
 ## Setup
 

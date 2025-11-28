@@ -1,4 +1,4 @@
-# CMDB Development Guide
+# UMDB Development Guide
 
 Guide for local development setup.
 
@@ -26,12 +26,12 @@ npm install
 
 Create PostgreSQL database:
 ```bash
-createdb cmdb
+createdb umdb
 ```
 
 Or using psql:
 ```sql
-CREATE DATABASE cmdb;
+CREATE DATABASE umdb;
 ```
 
 ### 3. Configure Environment
@@ -44,7 +44,7 @@ cp .env.example .env
 
 Edit `backend/.env`:
 ```
-DATABASE_URL="postgresql://YOUR_USER:YOUR_PASSWORD@localhost:5432/cmdb?schema=public"
+DATABASE_URL="postgresql://YOUR_USER:YOUR_PASSWORD@localhost:5432/umdb?schema=public"
 PORT=3001
 NODE_ENV=development
 TMDB_API_KEY=your_tmdb_key
@@ -229,7 +229,7 @@ npm run prisma:generate
 ## Project Structure
 
 ```
-cmdb/
+umdb/
 ├── backend/
 │   ├── src/
 │   │   ├── controllers/   # Request handlers

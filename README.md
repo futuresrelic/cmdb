@@ -1,16 +1,17 @@
-# 🎬 CMDB - Consumer Movie Database
+# 🎬 UMDB - Universal Media Database
 
-A comprehensive movie database system designed to catalog movies that aren't found in mainstream databases like IMDB or TMDB, with special focus on rare releases, Quebec-origin content, and regional DVDs.
+A comprehensive universal media database system designed to catalog ANY media (movies, TV shows, music, physical media) that aren't found in mainstream databases, with special focus on rare releases, Quebec-origin content, and regional editions.
 
 ## 🎯 Purpose
 
-CMDB solves a real problem: **What do you do when your DVD isn't in any database?**
+UMDB solves a real problem: **What do you do when your DVD, vinyl, or rare media isn't in any database?**
 
-- **Catch-all database** for movies missing from major platforms
-- **Manual entry** of data from physical DVD copies (format, distributor, UPC)
-- **External matching** to TMDB and IMDB when available
+- **Universal catch-all database** for media missing from major platforms (IMDB, TMDB, Amazon, etc.)
+- **Manual entry** of data from physical media copies (format, distributor, UPC)
+- **Multi-source matching** to TMDB, IMDB, Amazon, OMDB, and more
 - **Central repository** that can be integrated with other systems (like CineShelf)
-- **Special focus** on Quebec films and regional content
+- **Special focus** on Quebec content and regional releases
+- **Extensible architecture** for future media types (CDs, vinyls, books, games)
 
 Perfect for collectors, archivists, and cinephiles with rare or regional content.
 
@@ -56,8 +57,8 @@ Perfect for collectors, archivists, and cinephiles with rare or regional content
 
 ```bash
 # 1. Clone repository
-git clone <repo-url> cmdb
-cd cmdb
+git clone <repo-url> umdb
+cd umdb
 
 # 2. Configure environment
 cp .env.example .env
@@ -76,7 +77,7 @@ Access at http://localhost
 ./scripts/dev-setup.sh
 
 # 2. Set up database
-createdb cmdb
+createdb umdb
 cd backend && npm run prisma:migrate
 
 # 3. Start backend (terminal 1)
@@ -112,7 +113,7 @@ See [DEVELOPMENT.md](DEVELOPMENT.md) for detailed setup.
 ## 📦 Project Structure
 
 ```
-cmdb/
+umdb/
 ├── backend/              # Node.js API server
 │   ├── src/
 │   │   ├── controllers/  # Request handlers
@@ -139,13 +140,13 @@ cmdb/
 
 ## 🌐 Deployment
 
-**Live Site:** https://cmdb.futuresrelic.com
+**Live Site:** https://umdb.ca
 
 Deploy to your own server:
 ```bash
 # On server
-git clone <repo-url> cmdb
-cd cmdb
+git clone <repo-url> umdb
+cd umdb
 cp .env.example .env
 # Edit .env with production values
 docker-compose up -d
@@ -206,6 +207,9 @@ This is a personal project, but suggestions are welcome!
 - [ ] Statistics dashboard
 - [ ] Mobile app
 - [ ] Integration with CineShelf
+- [ ] Support for CDs and vinyl records
+- [ ] Amazon product data integration
+- [ ] Extensible source system for future platforms
 
 ## 📄 License
 

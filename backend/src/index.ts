@@ -27,7 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routes
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', message: 'CMDB API is running' });
+  res.json({ status: 'ok', message: 'UMDB API is running' });
 });
 
 app.use('/api/movies', movieRoutes);
@@ -40,7 +40,7 @@ app.use('/api/csv', csvRoutes);
 app.use(errorHandler);
 
 app.listen(PORT, () => {
-  console.log(`🎬 CMDB Server running on port ${PORT}`);
+  console.log(`🎬 UMDB Server running on port ${PORT}`);
   console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
 });
 
